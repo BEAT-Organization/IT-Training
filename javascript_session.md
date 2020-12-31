@@ -244,7 +244,7 @@ let myObject = {
 
 ## How to use Objects
 
-We can access object properties using `.` after the object name and as objects are `immutable` so we can change these properties
+We can access object properties using `.` after the object name and as objects are `mutable` so we can change these properties
 we can add new more properties after the object is created
 
 ```javascript
