@@ -18,7 +18,7 @@
     - REST API [optional]
     - SQL vs No SQL Databases [optional]
 
-##### Async material : [playlist](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jx2TTZk3IGWKSbtugYdrlu)
+##### Asynchronous js material : [playlist](https://www.youtube.com/playlist?list=PL4cUxeGkcC9jx2TTZk3IGWKSbtugYdrlu)
 
 ### Implement the Following Aplication Using the concepts you have learned
 
