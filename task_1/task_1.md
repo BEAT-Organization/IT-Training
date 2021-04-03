@@ -29,3 +29,4 @@ ZIP code.
 - You have to print the JSON object fetched from the OpenWeather to the console for every
 time the user requests weather data.
 
+![Demo](demo.gif)
