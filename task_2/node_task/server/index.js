@@ -1,6 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const logger = require('morgan')
+const path = require('path')
 const mongoose = require('mongoose');
 const journalRouter = require('./routes/journalRouter.js')
 require('dotenv').config();
@@ -8,6 +9,9 @@ require('dotenv').config();
 const app = new express();
 const { PORT, DB} = process.env;
 
+// Initialize the main project folder                                                     
+const appDir = path.dirname(require.main.filename);                                       
+app.use(express.static(`${appDir}/../app`));
 app.use(cors());
 app.use(express.json());
 app.use(logger('dev'));

@@ -13,7 +13,7 @@ exports.getHistory = async (req,res) =>{
 
 exports.addRequest = async (req,res) =>{
     try{
-        const requestData = pick(req.body,"date","zip","feeling","temp","lat","lon");
+        const requestData = pick(req.body,"date","zip","feeling","temperature","lat","lon");
         const newJournalRequest = await Journal.create(requestData);
         res.status(201);
         res.json(newJournalRequest);

@@ -5,7 +5,7 @@ const journalScehma = new Schema({
   date:  String, // String is shorthand for {type: String}
   zip: String,
   feeling: String,
-  temp: String,
+  temperature: String,
   lat: String,
   lon: String
 });

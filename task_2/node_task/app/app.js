@@ -40,21 +40,26 @@ const updateJournal = async () => {
     const url = constructAPI(inputData.zip);
     const fetchedWeather = await getWeatherData(url);
     if (inputData.feeling && inputData.zip && fetchedWeather.cod != '404') {
-        console.log(fetchedWeather);
-        updateUI({temprature : fetchedWeather.main.temp,feeling: inputData.feeling});
-        await storeData({ inputData, fetchedWeather });
-        const journalData = await getProjectData();
-        console.log("Done");
+        const temperature = fetchedWeather.main.temp;
+        updateUI({temperature,feeling:inputData.feeling});
+        const stored = await storeData({ ...inputData, temperature, date });
+        const journalData = await getHistory();
+
+        if(stored.status == "201"){
+            console.log(fetchedWeather);
+            console.log("History\n\n");
+            console.log(journalData);
+        }
     } else {
         alert('Please Enter valid input');
     }
-};
+}
 /**
  * @description Updates the UI depending on the user input and the fetched data
  */
-const updateUI = async ({ temprature, feeling }) => {
+const updateUI = async ({ temperature, feeling }) => {
     document.getElementById('date').innerHTML = `📅 Date: ${date}`;
-    document.getElementById('temp').innerHTML = `🌡️ Temprature: ${temprature}`;
+    document.getElementById('temp').innerHTML = `🌡️ Temprature: ${temperature}`;
     document.getElementById('feel').innerHTML = `🌼 Feeling:${feeling}`;
     clearValues(document.getElementsByTagName('input'));
 };
@@ -72,11 +77,10 @@ const clearValues = (list) => {
 /**
  * @description an async function that makes a get request to fetch the projectData
  */
-const getProjectData = async () => {
+const getHistory = async () => {
     try {
-        const projectData = await fetch('/getProjectData');
-        const resData = await projectData.json();
-        console.log(resData);
+        const history = await fetch('/journal/history');
+        const resData = await history.json();
         return resData;
     } catch (err) {
         console.log('CANT FETCH', err);
@@ -90,7 +94,6 @@ const getWeatherData = async (url) => {
     try {
         const fetchedData = await fetch(url);
         const resData = await fetchedData.json();
-        console.log(resData);
         return resData;
     } catch (err) {
         console.log('CANT FETCH', err);
@@ -106,8 +109,8 @@ const getWeatherData = async (url) => {
 const makeReq = async (url, reqInfo) => {
     try {
         const response = await fetch(url, reqInfo);
-        const resData = await response.json();
-        return resData;
+        //const resData = await response.json();
+        return response;
     } catch (err) {
         console.log(err);
     }
@@ -117,40 +120,17 @@ const makeReq = async (url, reqInfo) => {
  * @description an async function to make POST request to store user input data
  * @param {object} data data to be stored
  */
-const storeInput = async (data) => {
-    const reqData = { date, data };
-    const url = '/storeInput';
-    const reqInfo = {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reqData),
-    };
-    makeReq(url, reqInfo);
-};
-
-/**
- * @description an async function to make POST request to store weather data fetched from "openweathermap"
- * @param {object} data data to be stored
- */
-const storeWeather = async (data) => {
-    const reqData = data;
-    const url = '/storeWeather';
-    const reqInfo = {
-        method: 'post',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(reqData),
-    };
-    makeReq(url, reqInfo);
-};
-
-/**
- * @description Wrapper function to store data in the server using POST requests
- */
 const storeData = async (data) => {
-    const { inputData, fetchedWeather } = data;
-    await storeInput(inputData);
-    await storeWeather(fetchedWeather);
+    const url = '/journal/addRequest';
+    const reqInfo = {
+        method: 'post',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    };
+    const response = makeReq(url, reqInfo);
+    return response;
 };
+
 /**
  * @description Getting user input from the DOM
  */
