@@ -1,0 +1,95 @@
+*{
+    margin: 0px;
+    padding: 0px;
+    color: white;
+    font-size: 24px;
+    font-family: 'Noto Sans JP', sans-serif;
+}
+
+header{
+    background-color: rgb(30, 30, 30);
+    height: 50px;
+    display: block;
+    padding-top: 20px;
+}
+header p{
+    text-align: center;
+}
+body{
+    background-image: url(09n.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    text-align: center;    
+}
+.page{
+    padding-top: 40px;
+}
+.page input{
+    background-color: whitesmoke;
+    color: black;
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    height: 40px;
+    width: 350px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+}
+#ZIP{
+    margin-bottom: 40px;
+}
+#btn{
+    margin-top: 50px;
+    padding-top: 0px;
+    background-color: rgb(5, 21, 47);
+    color: rgb(139, 160, 205);
+    height: 50px;
+    width: 200px;
+    font-size: 24px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+.output{
+    margin-top: 40px;
+    display: flex;
+    justify-content: center;
+}
+.output p{
+    display: inline;
+}
+.outputdiv{
+    margin-left: 40px;
+}
+#dashes{
+    top: 10px;
+    position: absolute;
+    left: 20px;
+}
+#history{
+    background-color: rgb(30, 30, 30);
+    width: 0px;
+    position: fixed;
+    z-index: 1;
+    height: 80%;
+    top: 70px;
+    left: 0px;
+    transition: 0.5s;
+    padding-top: 40px;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+}
+#history ::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+#text{
+    display: none;
+   
+}
+ table, tr, td, th{
+    border: 3px solid white;
+    
+    border-collapse: collapse;
+}
