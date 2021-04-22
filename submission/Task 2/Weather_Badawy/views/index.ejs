@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="Weather Journal.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP&display=swap" rel="stylesheet">
+
+    <title>Weather Journal</title>
+    <link rel="shortcut icon" href="sun-behind-cloud_26c5.png">
+    
+</head>
+<body>
+    <header>
+    <img src="download (2).png" width="50px" height="50px" style="cursor: pointer;" onclick="openhist()" id="dashes">
+        <p>Weather Journal <img src="download.png" height="25px" width="25px"> <img src="download (1).png" height="25px" weidth="25px"></p>
+    </header>
+    <div id="history">
+        <div style="color: black;" id="text">
+
+        <p style="position: absolute; top: 0px; right: 5px; cursor: pointer;" onclick="closehist()">x</p>
+       
+        <h1>History</h1>
+
+            <table style="width: 80%; margin-left: 40px; margin-top: 20px;">
+                <thead><tr><th>City</th><th>Feeling</th></tr></thead>
+
+            <%history.forEach(history => {%>
+            <tbody><tr><td> <%=history.city%></td>
+             
+            <td><%=history.feeling%></td></tr></tbody>
+             
+             <%})%>
+
+            </table>
+             
+        </div>
+
+    </div>
+    <div action="/" method="POST"  class="page">
+
+        <label for="city">Enter City <img src="anchor_2693 (1).png" height="25px" width="25px"></label><br>
+        <input type="text" placeholder="City Name" id="city" name="city" required><br>
+
+        <label for="feeling">How are you feeling today?</label><br>
+        <input type="text" placeholder="Your Feeling" id="feeling" name="feeling" required><br>
+        
+        <button type="button" id="btn" onclick="submit()">Generate</button>
+
+    </div>
+    <div  class="output">
+        <div class="outputdiv">
+            <img src="calendar_1f4c5.png" height="20px" width="20px">
+            Date : <p id="date"></p>
+        </div>   
+        <div class="outputdiv">
+            <img src="thermometer_1f321-fe0f.png" height="20px" width="20px">
+            Tempreature : <p id="temp"></p>
+        </div>    
+        <div class="outputdiv">
+            <img src="blossom_1f33c.png" height="20px" width="20px">
+            Feeling : <p id="feel"></p>
+        </div>
+    </div>
+    
+    <script>
+    
+    const appid = '94e5d5997a48f2243fff54903eea97b9';
+
+    const F = document.getElementById("feeling").value;
+
+    const city = document.getElementById('city').value;
+
+        function submit(){
+            //e.preventDefault();
+
+             
+            const Y = new Date().getFullYear();
+
+            const M = new Date().getMonth() + 1;
+
+            const D = new Date().getDate();
+        
+            document.getElementById("date").innerHTML = Y + "/" + M + "/" + D;
+
+            var F = document.getElementById("feeling").value;
+
+            var city = document.getElementById('city').value;
+        
+            document.getElementById("feel").innerHTML = F;
+
+           
+
+            const API = `http://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${appid}`;
+
+            fetch(API)
+                .then(function(response){
+
+                    let data = response.json();
+
+                    return data;
+
+                })
+                .then(function(data){
+
+                    var temp = Math.floor(data.main.temp) - 273;
+
+                    var desc = data.weather[0].icon;
+
+                    document.getElementById("temp").innerHTML = temp + "°C";
+  
+                    document.body.style.backgroundImage = "url(wallpapers/" + desc +".jpg)";
+                    
+                })
+                .catch((err) => console.log(err));
+
+ //--------------------------POSTING DATA-----------------
+
+                fetch('/posthistory', {
+                 method : 'POST',
+
+                 body : JSON.stringify({
+                     city : city,
+
+                     feeling : F
+                    }),
+                 headers: {
+
+                     'Content-Type': 'application/json'
+                 }
+             })
+             .then(function(response){
+                 return response.json();
+             })
+             .then(function(data){
+                 console.log(data);
+             })
+             .catch(function(err){
+                 console.log(err);
+             });
+
+
+
+               
+        }
+        function openhist(){
+
+            fetch(`/gethistory`);
+           
+            document.getElementById("history").style.width = "300px";
+            document.getElementById("text").style.display = "block";
+
+        };
+
+    
+
+    
+        function closehist(){
+            document.getElementById("history").style.width = "0px";
+            document.getElementById("text").style.display = "none";
+        };
+
+    
+
+        </script>
+</body>
+
+
+
+</html>
